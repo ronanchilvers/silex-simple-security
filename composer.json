@@ -1,0 +1,17 @@
+{
+    "name": "ronanchilvers/silex-simple-security",
+    "description": "Simple security provider for Silex 2",
+    "require": {
+        "silex/silex": "^2.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ronan Chilvers",
+            "email": "ronan@thelittledot.com"
+        }
+    ],
+    "require-dev": {
+        "phpunit/phpunit": "^6.1"
+    }
+}
