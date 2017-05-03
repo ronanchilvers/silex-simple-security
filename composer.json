@@ -23,5 +23,5 @@
         "psr-4": {
             "Ronanchilvers\\Silex\\Security\\Tests\\" : "tests/"
         }
-    },
+    }
 }
