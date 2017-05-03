@@ -16,7 +16,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Ronanchilvers\\Silex\\Security": "src/"
+            "Ronanchilvers\\Silex\\Security\\": "src/"
         }
     },
     "autoload-dev" : {
