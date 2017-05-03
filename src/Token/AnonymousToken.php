@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Security\Token;
+namespace Ronanchilvers\Silex\Security\Token;
 
-use App\Security\Security;
+use Ronanchilvers\Silex\Security\Security;
 
 class AnonymousToken extends AbstractToken
 {

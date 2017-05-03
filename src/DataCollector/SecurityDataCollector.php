@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Security\DataCollector;
+namespace Ronanchilvers\Silex\Security\DataCollector;
 
-use App\Security\Token\Storage\StorageInterface;
+use Ronanchilvers\Silex\Security\Token\Storage\StorageInterface;
 use Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -11,7 +11,7 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 class SecurityDataCollector extends DataCollector
 {
     /**
-     * @var App\Security\Token\Storage\StorageInterface
+     * @var Ronanchilvers\Silex\Security\Token\Storage\StorageInterface
      */
     private $tokenStorage;
 

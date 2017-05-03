@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Security;
+namespace Ronanchilvers\Silex\Security;
 
-use App\Security\Authentication\AuthenticationManager;
-use App\Security\Authentication\Provider\UsernamePasswordProvider;
-use App\Security\Encoder\PasswordHashEncoder;
-use App\Security\Exception\ConfigurationException;
-use App\Security\Middleware\LogoutMiddleware;
-use App\Security\Middleware\UsernamePasswordMiddleware;
-use App\Security\Token\Storage\SessionStorage;
-use App\Security\Twig\SecurityExtension;
+use Ronanchilvers\Silex\Security\Authentication\AuthenticationManager;
+use Ronanchilvers\Silex\Security\Authentication\Provider\UsernamePasswordProvider;
+use Ronanchilvers\Silex\Security\Encoder\PasswordHashEncoder;
+use Ronanchilvers\Silex\Security\Exception\ConfigurationException;
+use Ronanchilvers\Silex\Security\Middleware\LogoutMiddleware;
+use Ronanchilvers\Silex\Security\Middleware\UsernamePasswordMiddleware;
+use Ronanchilvers\Silex\Security\Token\Storage\SessionStorage;
+use Ronanchilvers\Silex\Security\Twig\SecurityExtension;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use Silex\Api\BootableProviderInterface;

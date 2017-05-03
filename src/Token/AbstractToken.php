@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Security\Token;
+namespace Ronanchilvers\Silex\Security\Token;
 
-use App\Security\Token\TokenInterface;
-use App\Security\Security;
+use Ronanchilvers\Silex\Security\Token\TokenInterface;
+use Ronanchilvers\Silex\Security\Security;
 use \Serializable;
 
 abstract class AbstractToken implements

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Security\Exception;
+namespace Ronanchilvers\Silex\Security\Exception;
 
 use \RuntimeException;
 

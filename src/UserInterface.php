@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Security;
+namespace Ronanchilvers\Silex\Security;
 
 /**
  * Interface for user objects

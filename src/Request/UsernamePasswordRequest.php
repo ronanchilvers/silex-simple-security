@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Security\Request;
+namespace Ronanchilvers\Silex\Security\Request;
 
-use App\Security\Request\RequestInterface;
+use Ronanchilvers\Silex\Security\Request\RequestInterface;
 
 /**
  * Authentication request for a form base login with username + password

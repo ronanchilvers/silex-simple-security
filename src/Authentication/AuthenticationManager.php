@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Security\Authentication;
+namespace Ronanchilvers\Silex\Security\Authentication;
 
-use App\Security\Authentication\AuthenticationManagerInterface;
-use App\Security\Authentication\Provider\AuthenticationProviderInterface;
-use App\Security\Exception\AuthenticationException;
-use App\Security\Token\Storage\StorageInterface;
-use App\Security\Request\RequestInterface;
+use Ronanchilvers\Silex\Security\Authentication\AuthenticationManagerInterface;
+use Ronanchilvers\Silex\Security\Authentication\Provider\AuthenticationProviderInterface;
+use Ronanchilvers\Silex\Security\Exception\AuthenticationException;
+use Ronanchilvers\Silex\Security\Token\Storage\StorageInterface;
+use Ronanchilvers\Silex\Security\Request\RequestInterface;
 use Exception;
 
 /**
@@ -17,7 +17,7 @@ use Exception;
 class AuthenticationManager implements AuthenticationManagerInterface
 {
     /**
-     * @var App\Security\Token\Storage\StorageInterface
+     * @var Ronanchilvers\Silex\Security\Token\Storage\StorageInterface
      */
     protected $storage;
 

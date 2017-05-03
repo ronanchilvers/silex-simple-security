@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Security\Encoder;
+namespace Ronanchilvers\Silex\Security\Encoder;
 
-use App\Security\Encoder\EncoderInterface;
+use Ronanchilvers\Silex\Security\Encoder\EncoderInterface;
 
 /**
  * Password encoder using the standard password hashing functions in php 5.5+

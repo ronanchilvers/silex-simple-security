@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Security\Middleware;
+namespace Ronanchilvers\Silex\Security\Middleware;
 
-use App\Security\Middleware\MiddlewareInterface;
+use Ronanchilvers\Silex\Security\Middleware\MiddlewareInterface;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 

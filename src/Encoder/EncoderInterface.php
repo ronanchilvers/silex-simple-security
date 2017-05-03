@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Security\Encoder;
+namespace Ronanchilvers\Silex\Security\Encoder;
 
 /**
  * Interface for encoder objects

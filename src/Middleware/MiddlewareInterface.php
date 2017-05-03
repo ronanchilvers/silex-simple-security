@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Security\Middleware;
+namespace Ronanchilvers\Silex\Security\Middleware;
 
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;

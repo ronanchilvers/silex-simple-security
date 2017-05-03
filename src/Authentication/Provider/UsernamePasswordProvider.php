@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Security\Authentication\Provider;
+namespace Ronanchilvers\Silex\Security\Authentication\Provider;
 
-use App\Security\Authentication\Provider\AuthenticationProviderInterface;
-use App\Security\Encoder\EncoderInterface;
-use App\Security\Exception\AuthenticationException;
-use App\Security\Request\RequestInterface;
-use App\Security\Request\UsernamePasswordRequest;
-use App\Security\Token\AuthenticatedToken;
-use App\Security\UserInterface;
-use App\Security\UserProviderInterface;
+use Ronanchilvers\Silex\Security\Authentication\Provider\AuthenticationProviderInterface;
+use Ronanchilvers\Silex\Security\Encoder\EncoderInterface;
+use Ronanchilvers\Silex\Security\Exception\AuthenticationException;
+use Ronanchilvers\Silex\Security\Request\RequestInterface;
+use Ronanchilvers\Silex\Security\Request\UsernamePasswordRequest;
+use Ronanchilvers\Silex\Security\Token\AuthenticatedToken;
+use Ronanchilvers\Silex\Security\UserInterface;
+use Ronanchilvers\Silex\Security\UserProviderInterface;
 
 /**
  * Authentication provider for username + password tokens
@@ -19,19 +19,19 @@ use App\Security\UserProviderInterface;
 class UsernamePasswordProvider implements AuthenticationProviderInterface
 {
     /**
-     * @var App\Security\UserProviderInterface
+     * @var Ronanchilvers\Silex\Security\UserProviderInterface
      */
     protected $userProvider;
 
     /**
-     * @var App\Security\Encoder\EncoderInterface
+     * @var Ronanchilvers\Silex\Security\Encoder\EncoderInterface
      */
     protected $encoder;
 
     /**
      * Class constructor
      *
-     * @param App\Security\UserProviderInterface $userProvider
+     * @param Ronanchilvers\Silex\Security\UserProviderInterface $userProvider
      * @author Ronan Chilvers <ronan@d3r.com>
      */
     public function __construct(
@@ -45,7 +45,7 @@ class UsernamePasswordProvider implements AuthenticationProviderInterface
     /**
      * Authenticate a token
      *
-     * @param App\Security\RequestInterface
+     * @param Ronanchilvers\Silex\Security\RequestInterface
      * @return ???
      * @author Ronan Chilvers <ronan@d3r.com>
      */
@@ -76,7 +76,7 @@ class UsernamePasswordProvider implements AuthenticationProviderInterface
     /**
      * Does this provider support a given token
      *
-     * @param App\Security\RequestInterface
+     * @param Ronanchilvers\Silex\Security\RequestInterface
      * @return boolean
      * @author Ronan Chilvers <ronan@d3r.com>
      */

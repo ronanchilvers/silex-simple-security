@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Security\Request;
+namespace Ronanchilvers\Silex\Security\Request;
 
 /**
  * Standard security context class

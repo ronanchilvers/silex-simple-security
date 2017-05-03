@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Security\Twig;
+namespace Ronanchilvers\Silex\Security\Twig;
 
-use App\Security\Token\Storage\StorageInterface;
+use Ronanchilvers\Silex\Security\Token\Storage\StorageInterface;
 use Twig_Extension;
 use Twig_Function;
 
 class SecurityExtension extends Twig_Extension
 {
     /**
-     * @var App\Security\Token\Storage\StorageInterface
+     * @var Ronanchilvers\Silex\Security\Token\Storage\StorageInterface
      */
     protected $storage;
 

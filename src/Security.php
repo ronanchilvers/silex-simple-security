@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Security;
+namespace Ronanchilvers\Silex\Security;
 
 class Security
 {
@@ -8,4 +8,3 @@ class Security
     const SCOPE_REMEMBERED = 'scope.remembered';
     const SCOPE_AUTHENTICATED = 'scope.authenticated';
 }
-

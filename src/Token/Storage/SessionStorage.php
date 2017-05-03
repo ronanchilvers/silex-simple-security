@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Security\Token\Storage;
+namespace Ronanchilvers\Silex\Security\Token\Storage;
 
-use App\Security\Token\AnonymousToken;
-use App\Security\Token\TokenInterface;
+use Ronanchilvers\Silex\Security\Token\AnonymousToken;
+use Ronanchilvers\Silex\Security\Token\TokenInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class SessionStorage implements StorageInterface

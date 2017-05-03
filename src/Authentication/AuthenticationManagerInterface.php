@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Security\Authentication;
+namespace Ronanchilvers\Silex\Security\Authentication;
 
-use App\Security\Authentication\Provider\AuthenticationProviderInterface;
-use App\Security\Token\TokenInterface;
-use App\Security\Request\RequestInterface;
+use Ronanchilvers\Silex\Security\Authentication\Provider\AuthenticationProviderInterface;
+use Ronanchilvers\Silex\Security\Token\TokenInterface;
+use Ronanchilvers\Silex\Security\Request\RequestInterface;
 use Exception;
 
 interface AuthenticationManagerInterface
@@ -12,7 +12,7 @@ interface AuthenticationManagerInterface
     /**
      * Register an authentication provider with the manager
      *
-     * @param App\Security\Authentication\Provider\AuthenticationProviderInterface
+     * @param Ronanchilvers\Silex\Security\Authentication\Provider\AuthenticationProviderInterface
      * @author Ronan Chilvers <ronan@d3r.com>
      */
     public function registerProvider(AuthenticationProviderInterface $provider);
@@ -29,9 +29,9 @@ interface AuthenticationManagerInterface
     /**
      * Authenticate a given token
      *
-     * @param App\Security\RequestInterface $token
-     * @return App\Security\Token\TokenInterface
-     * @throws App\Security\Exception\AuthenticationException
+     * @param Ronanchilvers\Silex\Security\RequestInterface $token
+     * @return Ronanchilvers\Silex\Security\Token\TokenInterface
+     * @throws Ronanchilvers\Silex\Security\Exception\AuthenticationException
      * @author Ronan Chilvers <ronan@d3r.com>
      */
     public function authenticate(RequestInterface $token);

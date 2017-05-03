@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Security\Token;
+namespace Ronanchilvers\Silex\Security\Token;
 
 /**
  * Requests are swapped for tokens when a request is authenticated.
