@@ -1,9 +1,6 @@
 {
     "name": "ronanchilvers/silex-simple-security",
     "description": "Simple security provider for Silex 2",
-    "require": {
-        "silex/silex": "^2.0"
-    },
     "license": "MIT",
     "authors": [
         {
@@ -11,7 +8,20 @@
             "email": "ronan@thelittledot.com"
         }
     ],
+    "require": {
+        "silex/silex": "^2.0"
+    },
     "require-dev": {
         "phpunit/phpunit": "^6.1"
-    }
+    },
+    "autoload": {
+        "psr-4": {
+            "Ronanchilvers\\Silex\\Security": "src/"
+        }
+    },
+    "autoload-dev" : {
+        "psr-4": {
+            "Ronanchilvers\\Silex\\Security\\Tests\\" : "tests/"
+        }
+    },
 }
