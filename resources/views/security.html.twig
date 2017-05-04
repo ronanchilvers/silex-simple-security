@@ -35,6 +35,13 @@
                 <b>Token class</b>
                 <span>{{ collector.tokenClass|abbr_class }}</span>
             </div>
+
+            {% if collector.logoutUrl %}
+                <div class="sf-toolbar-info-piece">
+                    <b>Actions</b>
+                    <span><a href="{{ collector.logoutUrl }}">Logout</a></span>
+                </div>
+            {% endif %}
         {% else %}
             <div class="sf-toolbar-info-piece">
                 <span>Security is disabled</span>
