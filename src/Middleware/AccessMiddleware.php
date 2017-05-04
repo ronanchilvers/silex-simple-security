@@ -30,11 +30,7 @@ class AccessMiddleware implements MiddlewareInterface
      */
     public function handle(Request $request, Application $app)
     {
-        if (!$this->accessManager->isAllowed(
-                $app['token'],
-                $request
-            )
-        ) {
+        if (!$this->accessManager->isAllowed($app['token'], $request)) {
             $path = $app['security.denied.path'] ?: $app['security.login.path'] ;
             return $app->redirect($path);
         }

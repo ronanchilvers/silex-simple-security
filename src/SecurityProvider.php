@@ -12,6 +12,7 @@ use Ronanchilvers\Silex\Security\Exception\ConfigurationException;
 use Ronanchilvers\Silex\Security\Middleware\AccessMiddleware;
 use Ronanchilvers\Silex\Security\Middleware\LogoutMiddleware;
 use Ronanchilvers\Silex\Security\Middleware\UsernamePasswordMiddleware;
+use Ronanchilvers\Silex\Security\Security;
 use Ronanchilvers\Silex\Security\Token\Storage\SessionStorage;
 use Ronanchilvers\Silex\Security\Twig\SecurityExtension;
 use Silex\Api\BootableProviderInterface;
@@ -49,11 +50,21 @@ class SecurityProvider implements
         };
         $container['security.access.manager'] = function ($container) {
             $manager = new AccessManagerSimple();
-            $manager->addPublicPath($container['security.login.path']);
-            $manager->addPublicPath($container['security.check.path']);
-            $manager->addPublicPath($container['security.logout.path']);
+            $paths = [
+                $container['security.login.path'],
+                $container['security.check.path'],
+                $container['security.logout.path']
+            ];
             if ($container['security.denied.path']) {
-                $manager->addPublicPath($container['security.denied.path']);
+                $paths[] = $container['security.denied.path'];
+            }
+            foreach ($paths as $path) {
+                $regex = '^' . $path;
+                $manager->matchPath(
+                    $regex,
+                    null,
+                    Security::SCOPE_ALL
+                );
             }
 
             return $manager;
