@@ -16,13 +16,21 @@ class SecurityDataCollector extends DataCollector
     private $tokenStorage;
 
     /**
+     * @var string
+     */
+    private $logoutUrl;
+
+    /**
      * Class constructor
      *
+     * @param Ronanchilvers\Silex\Security\Token\Storage\StorageInterface $tokenStorage
+     * @param string $logoutUrl
      * @author Ronan Chilvers <ronan@d3r.com>
      */
-    public function __construct(StorageInterface $tokenStorage)
+    public function __construct(StorageInterface $tokenStorage, $logoutUrl)
     {
         $this->tokenStorage = $tokenStorage;
+        $this->logoutUrl = $logoutUrl;
     }
 
     /**
@@ -38,7 +46,8 @@ class SecurityDataCollector extends DataCollector
             'scope' => $token->getScope(),
             'identifier' => $token->getIdentifier(),
             'secret' => $token->getSecret(),
-            'authenticated' => $token->isAuthenticated()
+            'authenticated' => $token->isAuthenticated(),
+            'logoutUrl' => $this->logoutUrl,
         ];
     }
 
@@ -106,6 +115,17 @@ class SecurityDataCollector extends DataCollector
     public function isAuthenticated()
     {
         return $this->data['authenticated'];
+    }
+
+    /**
+     * Get the logout url
+     *
+     * @return string
+     * @author Ronan Chilvers <ronan@d3r.com>
+     */
+    public function getLogoutUrl()
+    {
+        return $this->data['logoutUrl'];
     }
 
     /**

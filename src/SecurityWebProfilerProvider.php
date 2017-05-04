@@ -27,13 +27,16 @@ class SecurityWebProfilerProvider implements ServiceProviderInterface
     {
         $app['data_collectors'] = $app->extend('data_collectors', function($collectors, $app) {
             $collectors['security'] = function ($app) {
-                return new SecurityDataCollector($app['security.token.storage']);
+                return new SecurityDataCollector(
+                    $app['security.token.storage'],
+                    $app['security.logout.path']
+                );
             };
 
             return $collectors;
         });
         $app['twig.loader.filesystem']->addPath(
-            __DIR__ . '/Resources/views',
+            __DIR__ . '/../resources/views',
             'Security'
         );
         $app->extend('data_collector.templates', function ($templates) {
