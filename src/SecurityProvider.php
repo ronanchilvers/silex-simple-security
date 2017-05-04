@@ -2,16 +2,18 @@
 
 namespace Ronanchilvers\Silex\Security;
 
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
+use Ronanchilvers\Silex\Security\Access\AccessManagerSimple;
 use Ronanchilvers\Silex\Security\Authentication\AuthenticationManager;
 use Ronanchilvers\Silex\Security\Authentication\Provider\UsernamePasswordProvider;
 use Ronanchilvers\Silex\Security\Encoder\PasswordHashEncoder;
 use Ronanchilvers\Silex\Security\Exception\ConfigurationException;
+use Ronanchilvers\Silex\Security\Middleware\AccessMiddleware;
 use Ronanchilvers\Silex\Security\Middleware\LogoutMiddleware;
 use Ronanchilvers\Silex\Security\Middleware\UsernamePasswordMiddleware;
 use Ronanchilvers\Silex\Security\Token\Storage\SessionStorage;
 use Ronanchilvers\Silex\Security\Twig\SecurityExtension;
-use Pimple\Container;
-use Pimple\ServiceProviderInterface;
 use Silex\Api\BootableProviderInterface;
 use Silex\Application;
 use Silex\Route;
@@ -29,6 +31,7 @@ class SecurityProvider implements
         $container['security.check.path'] = '/login-check';
         $container['security.logout.path'] = '/logout';
         $container['security.home.path'] = '/';
+        $container['security.denied.path'] = false;
         $container['security.auth.manager'] = function ($container) {
             $manager = new AuthenticationManager(
                 $container['security.token.storage']
@@ -40,6 +43,17 @@ class SecurityProvider implements
                 foreach ($container['security.providers'] as $provider) {
                     $manager->registerProvider($provider);
                 }
+            }
+
+            return $manager;
+        };
+        $container['security.access.manager'] = function ($container) {
+            $manager = new AccessManagerSimple();
+            $manager->addPublicPath($container['security.login.path']);
+            $manager->addPublicPath($container['security.check.path']);
+            $manager->addPublicPath($container['security.logout.path']);
+            if ($container['security.denied.path']) {
+                $manager->addPublicPath($container['security.denied.path']);
             }
 
             return $manager;
@@ -64,6 +78,11 @@ class SecurityProvider implements
         };
         $container['security.middleware.logout'] = function ($container) {
             return new LogoutMiddleware();
+        };
+        $container['security.middleware.access'] = function ($container) {
+            return new AccessMiddleware(
+                $container['security.access.manager']
+            );
         };
         $container['security.token.storage'] = function($container) {
             return new SessionStorage($container['session']);
@@ -102,6 +121,7 @@ class SecurityProvider implements
             $app->before([$app['security.middleware.form.check'], 'handle']);
         }
         $app->before([$app['security.middleware.logout'], 'handle']);
+        $app->before([$app['security.middleware.access'], 'handle']);
         $app['twig']->addExtension(
             new SecurityExtension($app['security.token.storage'])
         );
