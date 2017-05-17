@@ -21,14 +21,21 @@ abstract class AbstractToken implements
     private $identifier;
 
     /**
+     * Class constructor
+     *
+     * @param string $secret
+     * @author Ronan Chilvers <ronan@d3r.com>
+     */
+    public function __construct($secret)
+    {
+        $this->secret = $secret;
+    }
+
+    /**
      * @author Ronan Chilvers <ronan@d3r.com>
      */
     public function getSecret()
     {
-        if (is_null($this->secret)) {
-            return sha1(uniqid().microtime());
-        }
-
         return $this->secret;
     }
 

@@ -3,6 +3,7 @@
 namespace Ronanchilvers\Silex\Security\Token\Storage;
 
 use Ronanchilvers\Silex\Security\Token\AnonymousToken;
+use Ronanchilvers\Silex\Security\Token\TokenFactoryInterface;
 use Ronanchilvers\Silex\Security\Token\TokenInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -16,13 +17,21 @@ class SessionStorage implements StorageInterface
     protected $session;
 
     /**
+     * @var Ronanchilvers\Silex\Security\Token\TokenFactoryInterface
+     */
+    protected $tokenFactory;
+
+    /**
      * Class constructor
      *
      * @author Ronan Chilvers <ronan@d3r.com>
      */
-    public function __construct(SessionInterface $session)
-    {
+    public function __construct(
+        SessionInterface $session,
+        TokenFactoryInterface $tokenFactory
+    ) {
         $this->session = $session;
+        $this->tokenFactory = $tokenFactory;
     }
 
     /**
@@ -41,10 +50,17 @@ class SessionStorage implements StorageInterface
      */
     public function getToken()
     {
-        return $this->session->get(
+        $token = $this->session->get(
             static::STORAGE_KEY,
-            new AnonymousToken()
+            null
         );
+        if (is_null($token) || !$this->tokenFactory->validate($token)) {
+            return $this->tokenFactory->factory(
+                'Ronanchilvers\Silex\Security\Token\AnonymousToken'
+            );
+        }
+
+        return $token;
     }
 
     /**

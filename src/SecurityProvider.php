@@ -14,6 +14,7 @@ use Ronanchilvers\Silex\Security\Middleware\LogoutMiddleware;
 use Ronanchilvers\Silex\Security\Middleware\UsernamePasswordMiddleware;
 use Ronanchilvers\Silex\Security\Security;
 use Ronanchilvers\Silex\Security\Token\Storage\SessionStorage;
+use Ronanchilvers\Silex\Security\Token\TokenFactory;
 use Ronanchilvers\Silex\Security\Twig\SecurityExtension;
 use Silex\Api\BootableProviderInterface;
 use Silex\Application;
@@ -34,6 +35,15 @@ class SecurityProvider implements
         $container['security.logout.path'] = '/logout';
         $container['security.home.path'] = '/';
         $container['security.denied.path'] = null;
+        $container['security.salt'] = null;
+
+        // Security services
+        $container['security.token.factory'] = function ($container) {
+            return new TokenFactory(
+                $container['security.salt'],
+                $container['session']->getId()
+            );
+        };
         $container['security.auth.manager'] = function ($container) {
             $manager = new AuthenticationManager(
                 $container['security.token.storage']
@@ -81,6 +91,7 @@ class SecurityProvider implements
                 );
             }
             return new UsernamePasswordProvider(
+                $container['security.token.factory'],
                 $container['security.user.provider'],
                 $container['security.password.encoder']
             );
@@ -97,7 +108,10 @@ class SecurityProvider implements
             );
         };
         $container['security.token.storage'] = function($container) {
-            return new SessionStorage($container['session']);
+            return new SessionStorage(
+                $container['session'],
+                $container['security.token.factory']
+            );
         };
         $container['token'] = $container->factory(function($container) {
             return $container['security.token.storage']->getToken();
