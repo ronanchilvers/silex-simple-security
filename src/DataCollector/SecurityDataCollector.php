@@ -107,6 +107,17 @@ class SecurityDataCollector extends DataCollector
     }
 
     /**
+     * Get the token secret
+     *
+     * @return string
+     * @author Ronan Chilvers <ronan@d3r.com>
+     */
+    public function getSecret()
+    {
+        return $this->data['secret'];
+    }
+
+    /**
      * Is the token authenticated?
      *
      * @return boolean
