@@ -28,11 +28,12 @@ class SecurityProvider implements
      */
     public function register(Container $container)
     {
+        // Security parameter defaults
         $container['security.login.path'] = '/login';
         $container['security.check.path'] = '/login-check';
         $container['security.logout.path'] = '/logout';
         $container['security.home.path'] = '/';
-        $container['security.denied.path'] = false;
+        $container['security.denied.path'] = null;
         $container['security.auth.manager'] = function ($container) {
             $manager = new AuthenticationManager(
                 $container['security.token.storage']
@@ -55,7 +56,7 @@ class SecurityProvider implements
                 $container['security.check.path'],
                 $container['security.logout.path']
             ];
-            if ($container['security.denied.path']) {
+            if (!is_null($container['security.denied.path'])) {
                 $paths[] = $container['security.denied.path'];
             }
             foreach ($paths as $path) {
