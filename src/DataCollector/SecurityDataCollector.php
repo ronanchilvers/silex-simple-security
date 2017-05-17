@@ -2,8 +2,9 @@
 
 namespace Ronanchilvers\Silex\Security\DataCollector;
 
-use Ronanchilvers\Silex\Security\Token\Storage\StorageInterface;
 use Exception;
+use Ronanchilvers\Silex\Security\Access\AccessManagerInterface;
+use Ronanchilvers\Silex\Security\Token\Storage\StorageInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
@@ -14,6 +15,11 @@ class SecurityDataCollector extends DataCollector
      * @var Ronanchilvers\Silex\Security\Token\Storage\StorageInterface
      */
     private $tokenStorage;
+
+    /**
+     * @var Ronanchilvers\Silex\Security\Access\AccessManagerInterface
+     */
+    private $accessManager;
 
     /**
      * @var string
@@ -27,9 +33,13 @@ class SecurityDataCollector extends DataCollector
      * @param string $logoutUrl
      * @author Ronan Chilvers <ronan@d3r.com>
      */
-    public function __construct(StorageInterface $tokenStorage, $logoutUrl)
-    {
+    public function __construct(
+        StorageInterface $tokenStorage,
+        AccessManagerInterface $accessManager,
+        $logoutUrl
+    ) {
         $this->tokenStorage = $tokenStorage;
+        $this->accessManager = $accessManager;
         $this->logoutUrl = $logoutUrl;
     }
 
@@ -39,16 +49,23 @@ class SecurityDataCollector extends DataCollector
     public function collect(Request $request, Response $response, Exception $exception = null)
     {
         $token = $this->tokenStorage->getToken();
-        $this->data = [
-            'storageClass' => get_class($this->tokenStorage),
-            'tokenClass' => get_class($token),
-            'token' => $token,
-            'scope' => $token->getScope(),
-            'identifier' => $token->getIdentifier(),
-            'secret' => $token->getSecret(),
-            'authenticated' => $token->isAuthenticated(),
-            'logoutUrl' => $this->logoutUrl,
+        $data = [
+            'authentication' => [
+                'storageClass' => get_class($this->tokenStorage),
+                'tokenClass' => get_class($token),
+                'token' => $token,
+                'scope' => $token->getScope(),
+                'identifier' => $token->getIdentifier(),
+                'secret' => $token->getSecret(),
+                'authenticated' => $token->isAuthenticated(),
+                'logoutUrl' => $this->logoutUrl,
+            ],
+            'access' => [
+                'configuredPaths' => $this->accessManager->getConfiguredPaths(),
+                'matchedPaths' => $this->accessManager->getMatchedPaths(),
+            ]
         ];
+        $this->data = $data;
     }
 
     /**
@@ -59,7 +76,7 @@ class SecurityDataCollector extends DataCollector
      */
     public function getStorageClass()
     {
-        return $this->data['storageClass'];
+        return $this->data['authentication']['storageClass'];
     }
 
     /**
@@ -70,7 +87,7 @@ class SecurityDataCollector extends DataCollector
      */
     public function getTokenClass()
     {
-        return $this->data['tokenClass'];
+        return $this->data['authentication']['tokenClass'];
     }
 
     /**
@@ -81,7 +98,7 @@ class SecurityDataCollector extends DataCollector
      */
     public function getToken()
     {
-        return $this->data['token'];
+        return $this->data['authentication']['token'];
     }
 
     /**
@@ -92,7 +109,7 @@ class SecurityDataCollector extends DataCollector
      */
     public function getScope()
     {
-        return $this->data['scope'];
+        return $this->data['authentication']['scope'];
     }
 
     /**
@@ -103,7 +120,7 @@ class SecurityDataCollector extends DataCollector
      */
     public function getIdentifier()
     {
-        return $this->data['identifier'] ?: 'n/a';
+        return $this->data['authentication']['identifier'] ?: 'anonymous';
     }
 
     /**
@@ -114,7 +131,7 @@ class SecurityDataCollector extends DataCollector
      */
     public function getSecret()
     {
-        return $this->data['secret'];
+        return $this->data['authentication']['secret'];
     }
 
     /**
@@ -125,7 +142,7 @@ class SecurityDataCollector extends DataCollector
      */
     public function isAuthenticated()
     {
-        return $this->data['authenticated'];
+        return $this->data['authentication']['authenticated'];
     }
 
     /**
@@ -136,7 +153,55 @@ class SecurityDataCollector extends DataCollector
      */
     public function getLogoutUrl()
     {
-        return $this->data['logoutUrl'];
+        return $this->data['authentication']['logoutUrl'];
+    }
+
+    /**
+     * Get the headers for the configured paths
+     *
+     * @return array
+     * @author Ronan Chilvers <ronan@d3r.com>
+     */
+    public function getConfiguredAccessPathHeaders()
+    {
+        return $this->getArrayHeaders(
+            $this->getConfiguredAccessPaths()
+        );
+    }
+
+    /**
+     * Get the headers for the matched paths
+     *
+     * @return array
+     * @author Ronan Chilvers <ronan@d3r.com>
+     */
+    public function getMatchedAccessPathHeaders()
+    {
+        return $this->getArrayHeaders(
+            $this->getMatchedAccessPaths()
+        );
+    }
+
+    /**
+     * Get the configured access paths for this collector
+     *
+     * @return array
+     * @author Ronan Chilvers <ronan@d3r.com>
+     */
+    public function getConfiguredAccessPaths()
+    {
+        return $this->data['access']['configuredPaths'];
+    }
+
+    /**
+     * Get the matched access paths for this collector
+     *
+     * @return array
+     * @author Ronan Chilvers <ronan@d3r.com>
+     */
+    public function getMatchedAccessPaths()
+    {
+        return $this->data['access']['matchedPaths'];
     }
 
     /**
@@ -145,5 +210,21 @@ class SecurityDataCollector extends DataCollector
     public function getName()
     {
         return 'security';
+    }
+
+    /**
+     * Get a set of array headers
+     *
+     * @return array
+     * @author Ronan Chilvers <ronan@d3r.com>
+     */
+    protected function getArrayHeaders($array)
+    {
+        if (0 == count($array)) {
+            return [];
+        }
+        reset($array);
+
+        return array_keys(current($array));
     }
 }

@@ -12,7 +12,7 @@
 
     {% set icon %}
         {{ include('@Security/icon.svg') }}
-        <span class="sf-toolbar-value">{{ collector.scope|default('n/a') }}</span>
+        <span class="sf-toolbar-value">{{ collector.identifier }}</span>
     {% endset %}
 
     {% set text %}
@@ -40,7 +40,7 @@
                 <span>{{ collector.secret }}</span>
             </div>
 
-            {% if collector.logoutUrl %}
+            {% if collector.authenticated and collector.logoutUrl %}
                 <div class="sf-toolbar-info-piece">
                     <b>Actions</b>
                     <span><a href="{{ collector.logoutUrl }}">Logout</a></span>
@@ -54,4 +54,122 @@
     {% endset %}
 
     {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', { link: profiler_url, status: color_code }) }}
+{% endblock %}
+
+{% block menu %}
+    <span class="label">
+        <span class="icon">{{ include('@Security/icon.svg') }}</span>
+        <strong>Security</strong>
+    </span>
+{% endblock %}
+
+{% block panel %}
+    <h2>Security Token</h2>
+
+    <div class="metrics">
+        <div class="metric">
+            <span class="value">{{ include('@WebProfiler/Icon/' ~ (collector.authenticated ? 'yes' : 'no') ~ '.svg') }}</span>
+            <span class="label">Authenticated</span>
+        </div>
+        <div class="metric">
+            <span class="value">{{ collector.identifier }}</span>
+            <span class="label">Identifier</span>
+        </div>
+    </div>
+
+    <h2>Authentication</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th scope="col" class="key">Property</th>
+                <th scope="col">Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th>Storage Class</th>
+                <td>{{ collector.storageClass }}</td>
+            </tr>
+            <tr>
+                <th>Token Class</th>
+                <td>{{ collector.tokenClass }}</td>
+            </tr>
+            <tr>
+                <th>Token</th>
+                <td>{{ profiler_dump(collector.token) }}</td>
+            </tr>
+            <tr>
+                <th>Scope</th>
+                <td>{{ collector.scope }}</td>
+            </tr>
+            <tr>
+                <th>Secret</th>
+                <td>{{ collector.secret }}</td>
+            </tr>
+            <tr>
+                <th>Is Authenticated</th>
+                <td>{{ profiler_dump(collector.authenticated) }}</td>
+            </tr>
+            <tr>
+                <th>LogoutUrl</th>
+                <td>{{ collector.logoutUrl }}</td>
+            </tr>
+
+        </tbody>
+    </table>
+
+    <h2>Access</h2>
+
+
+    <h3>Matched Paths</h3>
+
+    <table>
+        <thead>
+            <tr>
+                <th scope="col" class="key">#</th>
+            {% for header in collector.matchedAccessPathHeaders %}
+                <th scope="col" class="key">{{ header|title }}</th>
+            {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% set counter = 1 %}
+            {% for path in collector.matchedAccessPaths %}
+            <tr>
+                <td class="font-normal text-muted">{{ counter }}</td>
+                {% for value in path %}
+                <td>{{ profiler_dump(value)}}</td>
+                {% endfor %}
+            </tr>
+                {% set counter = counter + 1 %}
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h3>Configured Paths</h3>
+
+    <table>
+        <thead>
+            <tr>
+                <th scope="col" class="key">#</th>
+            {% for header in collector.configuredAccessPathHeaders %}
+                <th scope="col" class="key">{{ header|title }}</th>
+            {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% set counter = 1 %}
+            {% for path in collector.configuredAccessPaths %}
+            <tr>
+                <td class="font-normal text-muted">{{ counter }}</td>
+                {% for value in path %}
+                <td>{{ profiler_dump(value)}}</td>
+                {% endfor %}
+            </tr>
+                {% set counter = counter + 1 %}
+            {% endfor %}
+        </tbody>
+    </table>
+
 {% endblock %}

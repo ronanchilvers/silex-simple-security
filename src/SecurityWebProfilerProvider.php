@@ -29,6 +29,7 @@ class SecurityWebProfilerProvider implements ServiceProviderInterface
             $collectors['security'] = function ($app) {
                 return new SecurityDataCollector(
                     $app['security.token.storage'],
+                    $app['security.access.manager'],
                     $app['security.logout.path']
                 );
             };

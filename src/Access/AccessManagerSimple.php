@@ -20,6 +20,13 @@ class AccessManagerSimple implements AccessManagerInterface
     protected $paths = [];
 
     /**
+     * An array of matched paths
+     *
+     * @var array
+     */
+    protected $matchedPaths = [];
+
+    /**
      * Add a public path to the manager
      *
      * The first parameter here is a regex to match against the path. The second
@@ -68,14 +75,44 @@ class AccessManagerSimple implements AccessManagerInterface
             if (0 == preg_match($data['regex'], $uri)) {
                 continue;
             }
+            $match = [
+                'uri' => $uri,
+                'method' => $method,
+                'scope' => $scope,
+                'regex' => $data['regex']
+            ];
             if (!is_array($data['methods'])) {
+                $this->matchedPaths[] = $match;
                 return true;
             }
             if (in_array($method, $data['methods'])) {
+                $this->matchedPaths[] = $match;
                 return true;
             }
         }
 
         return false;
+    }
+
+    /**
+     * Get an array of all configured paths
+     *
+     * @return array
+     * @author Ronan Chilvers <ronan@d3r.com>
+     */
+    public function getConfiguredPaths()
+    {
+        return $this->paths;
+    }
+
+    /**
+     * Get an array of the paths that have been matched by this manager
+     *
+     * @return array
+     * @author Ronan Chilvers <ronan@d3r.com>
+     */
+    public function getMatchedPaths()
+    {
+        return $this->matchedPaths;
     }
 }
